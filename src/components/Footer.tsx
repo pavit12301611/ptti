@@ -4,9 +4,9 @@ import { Code2, Heart, Coffee, MapPin, ArrowUp, Terminal, Bug, Mail, Instagram, 
 import FadeIn from './FadeIn';
 
 const SOCIALS = {
-  email: 'your-email@example.com',
-  instagram: 'https://instagram.com/your_handle',
-  whatsapp: 'https://wa.me/91XXXXXXXXXX',
+  email: 'pavitsingh1611@gmail.com',
+  instagram: 'https://www.instagram.com/pavitsingh1611',
+  whatsapp: 'https://wa.me/919528923866',
 };
 
 const Footer: React.FC = () => {
