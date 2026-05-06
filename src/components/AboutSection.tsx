@@ -146,10 +146,10 @@ const AboutSection: React.FC = () => {
           </div>
         </div>
 
-        {/* CTA */}
-        <ScrollReveal direction="left" offset={40} className="mt-16 sm:mt-20">
-          <ContactButton />
-        </ScrollReveal>
+       {/* CTA */}
+<ScrollReveal direction="left" offset={40} className="mt-16 sm:mt-20">
+  <ContactButton onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} />
+</ScrollReveal>      
       </div>
     </section>
   );
