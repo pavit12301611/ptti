@@ -6,11 +6,11 @@ import ContactButton from './ContactButton';
 
 // 👇 EDIT THESE WITH YOUR REAL DETAILS
 const CONTACT_INFO = {
-  email: 'your-email@example.com',
-  instagramHandle: '@your_handle',
-  instagramUrl: 'https://instagram.com/your_handle',
-  whatsappDisplay: '+91 XXXXX XXXXX',
-  whatsappNumber: '91XXXXXXXXXX', // No +, no spaces, country code first
+  email: 'pavitsingh1611@gmail.com',
+  instagramHandle: '@pavitsingh1611',
+  instagramUrl: 'https://www.instagram.com/pavitsingh1611',
+  whatsappDisplay: '+91 9528923866',
+  whatsappNumber: '919528923866', // No +, no spaces, country code first
 };
 
 const ContactSection: React.FC = () => {
