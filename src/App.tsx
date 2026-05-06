@@ -13,17 +13,8 @@ import ParticleField from './components/ParticleField';
 import CursorGlow from './components/CursorGlow';
 
 const App: React.FC = () => {
-  const [loaded, setLoaded] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const { scrollYProgress } = useScroll();
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setLoaded(true);
-      document.body.classList.add('app-loaded');
-    }, 800);
-    return () => clearTimeout(t);
-  }, []);
 
   useEffect(() => {
     const handler = () => setShowScrollTop(window.scrollY > 800);
@@ -32,7 +23,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-[#0C0C0C] font-kanit relative" style={{ overflowX: 'clip' }}>
+    <div className="bg-[#0C0C0C] font-kanit relative min-h-screen" style={{ overflowX: 'clip' }}>
       {/* Scroll progress bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-[2px] z-[9998] origin-left"
@@ -45,20 +36,14 @@ const App: React.FC = () => {
       <ParticleField />
       <CursorGlow />
 
-      <AnimatePresence>
-        {loaded && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <HeroSection />
-            <MarqueeSection />
-            <AboutSection />
-            <SkillShowcase />
-            <ProjectsSection />
-            <FunZone />
-            <ContactSection />
-            <Footer />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <HeroSection />
+      <MarqueeSection />
+      <AboutSection />
+      <SkillShowcase />
+      <ProjectsSection />
+      <FunZone />
+      <ContactSection />
+      <Footer />
 
       {/* Scroll to top button */}
       <AnimatePresence>
