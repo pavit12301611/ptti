@@ -42,7 +42,7 @@ const PythonAnim: React.FC = () => {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// HTML ANIMATION
+// HTML ANIMATION — FIXED: filter undefined values
 // ═══════════════════════════════════════════════════════════════
 const HtmlAnim: React.FC = () => {
   const tags = ['<div>', '</div>', '<h1>', '<p>', '{color}', '.flex', '#app', 'const', '=>', 'async'];
@@ -188,7 +188,7 @@ const JavaAnim: React.FC = () => (
 );
 
 // ═══════════════════════════════════════════════════════════════
-// SKILLS DATA
+// SKILLS DATA — Anim is now a string key, not component reference
 // ═══════════════════════════════════════════════════════════════
 type AnimKey = 'python' | 'html' | 'cpp' | 'java';
 
@@ -226,7 +226,7 @@ const skills: Skill[] = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// ANIMATION RENDERER
+// ANIMATION RENDERER — explicit if/else (build-safe)
 // ═══════════════════════════════════════════════════════════════
 const renderAnim = (key: AnimKey) => {
   if (key === 'python') return <PythonAnim />;
@@ -268,37 +268,50 @@ const SkillPanel: React.FC<SkillPanelProps> = ({ skill, index, onActive }) => {
 
   return (
     <div ref={ref} className="h-screen w-full flex items-center justify-center px-5 sm:px-8 md:px-10 sticky top-0">
-      {/* Portal Effect — only flashes briefly on entry, then disappears */}
+      {/* Portal Effect */}
       <AnimatePresence>
         {isActive && (
           <motion.div
             className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
             initial={{ opacity: 0 }}
-            animate={{ opacity: [0, 1, 0] }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, times: [0, 0.4, 1] }}
+            transition={{ duration: 0.6 }}
           >
             <motion.div
               className="absolute rounded-full"
               style={{
-                width: 500, height: 500,
-                background: `conic-gradient(from 0deg, transparent, ${skill.color}, transparent, ${skill.color}, transparent)`,
-                opacity: 0.4,
+                width: 600, height: 600,
+                background: `conic-gradient(from 0deg, transparent, ${skill.color}80, transparent, ${skill.color}80, transparent)`,
+                filter: 'blur(30px)',
               }}
               initial={{ scale: 0, rotate: 0 }}
-              animate={{ scale: 1.2, rotate: 360 }}
+              animate={{ scale: 1.5, rotate: 360 }}
+              exit={{ scale: 0, opacity: 0 }}
               transition={{ duration: 1.2, ease: 'easeOut' }}
             />
             <motion.div
               className="absolute rounded-full border-2"
               style={{
-                width: 350, height: 350,
-                borderColor: skill.color,
-                boxShadow: `0 0 40px ${skill.color}80`,
+                width: 400, height: 400, borderColor: skill.color,
+                boxShadow: `0 0 80px ${skill.color}, inset 0 0 80px ${skill.color}`,
               }}
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 0.6, ease: 'backOut' }}
+              exit={{ scale: 0 }}
+              transition={{ duration: 0.8, ease: 'backOut' }}
+            />
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                width: 250, height: 250,
+                background: `radial-gradient(circle, ${skill.color}aa, transparent)`,
+                filter: 'blur(40px)',
+              }}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1.5 }}
+              exit={{ scale: 0 }}
+              transition={{ duration: 1 }}
             />
           </motion.div>
         )}
@@ -406,11 +419,11 @@ const SkillShowcase: React.FC = () => {
 
       {/* Sticky scroll container */}
       <div className="relative">
-        {/* Background gradient — minimal, no blur */}
+        {/* Background gradient */}
         <div
           className="fixed inset-0 pointer-events-none transition-all duration-1000 z-0"
           style={{
-            background: `radial-gradient(circle at 50% 50%, ${skills[activeIdx]?.color || '#00d4ff'}05, transparent 80%)`,
+            background: `radial-gradient(circle at 50% 50%, ${skills[activeIdx]?.color || '#00d4ff'}08, transparent 70%)`,
           }}
         />
 
