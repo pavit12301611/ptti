@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform, useSpring, MotionValue } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from './ScrollReveal';
 
 // ═══════════════════════════════════════════════════════════════
@@ -21,17 +21,17 @@ const PythonAnim: React.FC = () => {
         </motion.span>
       ))}
       <div className="absolute inset-0 flex items-center justify-center">
-        <motion.svg width="200" height="160" viewBox="0 0 200 160" className="drop-shadow-[0_0_25px_rgba(55,118,171,0.4)]">
+        <svg width="200" height="160" viewBox="0 0 200 160" className="drop-shadow-[0_0_25px_rgba(55,118,171,0.4)]">
           <motion.path d="M 20 80 Q 50 20 80 80 Q 110 140 140 80 Q 170 20 180 60" fill="none" stroke="#3776AB" strokeWidth="6" strokeLinecap="round"
-            initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 2.5, ease: 'easeInOut' }} />
-          <motion.circle cx="180" cy="58" r="6" fill="#ffbe0b" initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 2.5, type: 'spring' }} />
-          <motion.circle cx="176" cy="55" r="2" fill="#0d1117" initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ delay: 2.7 }} />
-        </motion.svg>
+            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2.5, ease: 'easeInOut' }} />
+          <motion.circle cx="180" cy="58" r="6" fill="#ffbe0b" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.5, type: 'spring' }} />
+          <motion.circle cx="176" cy="55" r="2" fill="#0d1117" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2.7 }} />
+        </svg>
       </div>
       <div className="absolute bottom-4 left-4 right-4 flex gap-2 flex-wrap">
         {['Automation', 'AI/ML', 'Data Science', 'Scripting', 'Django'].map((t, i) => (
           <motion.span key={t} className="px-2 py-1 rounded-md text-xs font-mono bg-[#3776AB]/10 text-[#3776AB] border border-[#3776AB]/20"
-            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 + i * 0.1 }}>
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}>
             {t}
           </motion.span>
         ))}
@@ -42,7 +42,7 @@ const PythonAnim: React.FC = () => {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// HTML / CSS / JS ANIMATION
+// HTML ANIMATION
 // ═══════════════════════════════════════════════════════════════
 const HtmlAnim: React.FC = () => {
   const tags = ['<div>', '</div>', '<h1>', '<p>', '{color}', '.flex', '#app', 'const', '=>', 'async'];
@@ -59,10 +59,10 @@ const HtmlAnim: React.FC = () => {
   return (
     <div className="relative w-full h-72 sm:h-80 overflow-hidden rounded-2xl bg-gradient-to-br from-[#0d1117] to-[#1a0a00] border border-[#F7DF1E]/20">
       {tags.map((t, i) => (
-        <motion.span key={i} className="absolute font-mono text-xs html-tag-float"
+        <span key={i} className="absolute font-mono text-xs html-tag-float"
           style={{ left: `${5 + (i * 9) % 85}%`, top: `${10 + (i * 14) % 65}%`, color: i < 3 ? '#e34c26' : i < 6 ? '#264de4' : '#F7DF1E', opacity: 0.15, animationDelay: `${i * 0.3}s` }}>
           {t}
-        </motion.span>
+        </span>
       ))}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="code-block rounded-xl p-4 w-52 border border-white/5">
@@ -71,20 +71,18 @@ const HtmlAnim: React.FC = () => {
             <div className="w-2 h-2 rounded-full bg-[#ffbd2e]" />
             <div className="w-2 h-2 rounded-full bg-[#28c840]" />
           </div>
-          <AnimatePresence>
-            {lines.map((l, i) => (
-              <motion.div key={i} className="font-mono text-xs leading-relaxed" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
-                <span className={l.includes('<') ? 'text-[#e34c26]' : 'text-white/50'}>{l}</span>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+          {lines.map((l, i) => (
+            <motion.div key={i} className="font-mono text-xs leading-relaxed" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
+              <span className={l.includes('<') ? 'text-[#e34c26]' : 'text-white/50'}>{l}</span>
+            </motion.div>
+          ))}
           <span className="text-[#F7DF1E] font-mono text-xs animate-pulse">▊</span>
         </div>
       </div>
       <div className="absolute bottom-4 left-4 right-4 flex gap-2 flex-wrap">
         {['React', 'Three.js', 'GSAP', 'Tailwind', 'WebGL'].map((t, i) => (
           <motion.span key={t} className="px-2 py-1 rounded-md text-xs font-mono bg-[#F7DF1E]/10 text-[#F7DF1E] border border-[#F7DF1E]/20"
-            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 + i * 0.1 }}>
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}>
             {t}
           </motion.span>
         ))}
@@ -95,7 +93,7 @@ const HtmlAnim: React.FC = () => {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// C++ ANIMATION
+// CPP ANIMATION
 // ═══════════════════════════════════════════════════════════════
 const CppAnim: React.FC = () => {
   const [bits] = useState(() => Array.from({ length: 25 }, (_, i) => ({ id: i, x: Math.random() * 100, speed: 2 + Math.random() * 4, delay: Math.random() * 3 })));
@@ -129,7 +127,7 @@ const CppAnim: React.FC = () => {
       <div className="absolute bottom-4 left-4 right-4 flex gap-2 flex-wrap">
         {['Algorithms', 'OOP', 'STL', 'Pointers', 'DSA'].map((t, i) => (
           <motion.span key={t} className="px-2 py-1 rounded-md text-xs font-mono bg-[#00599C]/10 text-[#00599C] border border-[#00599C]/20"
-            initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 + i * 0.1 }}>
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}>
             {t}
           </motion.span>
         ))}
@@ -154,23 +152,23 @@ const JavaAnim: React.FC = () => (
     <div className="absolute inset-0 flex items-center justify-center">
       <div className="relative">
         {[0, 1, 2].map(i => (
-          <motion.div key={i} className="absolute java-cup-steam"
+          <div key={i} className="absolute java-cup-steam"
             style={{ left: 20 + i * 20, bottom: 80, width: 2, height: 25, borderRadius: 10, background: `rgba(248,152,32,${0.15 - i * 0.03})`, animationDelay: `${i * 0.5}s` }} />
         ))}
         <svg width="80" height="90" viewBox="0 0 80 90">
           <motion.rect x="10" y="30" width="50" height="55" rx="5" fill="none" stroke="#f89820" strokeWidth="3" opacity="0.6"
-            initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.5 }} />
+            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5 }} />
           <motion.path d="M 60 45 Q 75 45 75 60 Q 75 75 60 75" fill="none" stroke="#f89820" strokeWidth="3" opacity="0.4"
-            initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1, delay: 1.5 }} />
+            initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1, delay: 1.5 }} />
           <motion.text x="35" y="65" textAnchor="middle" fill="#f89820" fontSize="14" opacity="0.7"
-            initial={{ opacity: 0 }} whileInView={{ opacity: 0.7 }} viewport={{ once: true }} transition={{ delay: 2 }}>☕</motion.text>
+            initial={{ opacity: 0 }} animate={{ opacity: 0.7 }} transition={{ delay: 2 }}>☕</motion.text>
         </svg>
       </div>
     </div>
     <div className="absolute bottom-4 left-4 right-4 flex gap-2 flex-wrap">
       {['Spring', 'OOP', 'JVM', 'Collections', 'Threads'].map((t, i) => (
         <motion.span key={t} className="px-2 py-1 rounded-md text-xs font-mono bg-[#f89820]/10 text-[#f89820] border border-[#f89820]/20"
-          initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 + i * 0.1 }}>
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 + i * 0.1 }}>
           {t}
         </motion.span>
       ))}
@@ -206,276 +204,214 @@ const skills = [
 ];
 
 // ═══════════════════════════════════════════════════════════════
-// PORTAL / GATEWAY ANIMATION
-// ═══════════════════════════════════════════════════════════════
-const Portal: React.FC<{ progress: MotionValue<number>; color: string }> = ({ progress, color }) => {
-  const scale = useTransform(progress, [0, 0.5, 1], [0, 2.5, 0]);
-  const opacity = useTransform(progress, [0, 0.3, 0.7, 1], [0, 0.6, 0.6, 0]);
-  const rotate = useTransform(progress, [0, 1], [0, 180]);
-
-  return (
-    <motion.div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30" style={{ opacity }}>
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 600, height: 600,
-          background: `conic-gradient(from 0deg, ${color}00, ${color}80, ${color}00, ${color}80, ${color}00)`,
-          scale, rotate, filter: 'blur(20px)',
-        }}
-      />
-      <motion.div
-        className="absolute rounded-full border-2"
-        style={{
-          width: 400, height: 400, borderColor: color, scale,
-          boxShadow: `0 0 80px ${color}, inset 0 0 80px ${color}`,
-        }}
-      />
-      <motion.div
-        className="absolute rounded-full"
-        style={{
-          width: 200, height: 200,
-          background: `radial-gradient(circle, ${color}80, transparent)`,
-          scale, filter: 'blur(40px)',
-        }}
-      />
-    </motion.div>
-  );
-};
-
-// ═══════════════════════════════════════════════════════════════
-// SINGLE SKILL PANEL — All useTransform hooks at top level ✅
-// ═══════════════════════════════════════════════════════════════
-interface SkillPanelProps {
-  skill: typeof skills[0];
-  index: number;
-  sectionProgress: MotionValue<number>;
-}
-
-const SkillPanel: React.FC<SkillPanelProps> = ({ skill, index, sectionProgress }) => {
-  const total = skills.length;
-  const segmentSize = 1 / total;
-  const start = index * segmentSize;
-  const end = (index + 1) * segmentSize;
-  const center = start + segmentSize / 2;
-
-  // ✅ ALL HOOKS AT TOP LEVEL — no inline useTransform in JSX
-  const opacity = useTransform(
-    sectionProgress,
-    [Math.max(0, start - 0.05), start, end, Math.min(1, end + 0.05)],
-    [0, 1, 1, 0]
-  );
-
-  const scale = useTransform(
-    sectionProgress,
-    [Math.max(0, start - 0.1), center, Math.min(1, end + 0.1)],
-    [0.7, 1, 0.7]
-  );
-
-  const rotateY = useTransform(
-    sectionProgress,
-    [Math.max(0, start - 0.05), center, Math.min(1, end + 0.05)],
-    [-15, 0, 15]
-  );
-
-  const portalProgress = useTransform(
-    sectionProgress,
-    [Math.max(0, start - 0.05), start + 0.05, end - 0.05, Math.min(1, end + 0.05)],
-    [0, 1, 1, 0]
-  );
-
-  // Slide animations
-  const animX = useTransform(sectionProgress, [start, center, end], [-100, 0, 100]);
-  const infoX = useTransform(sectionProgress, [start, center, end], [100, 0, -100]);
-
-  return (
-    <motion.div
-      className="absolute inset-0 flex items-center justify-center px-5 sm:px-8 md:px-10"
-      style={{ opacity, scale, rotateY, transformPerspective: 1200 }}
-    >
-      <Portal progress={portalProgress} color={skill.color} />
-
-      <div className="relative z-10 max-w-5xl w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          {/* Animation side */}
-          <motion.div style={{ x: animX }}>
-            {React.createElement(skill.Anim)}
-          </motion.div>
-
-          {/* Info side */}
-          <motion.div style={{ x: infoX }}>
-            <div className="flex items-center gap-4 mb-4">
-              <motion.span
-                className="text-5xl sm:text-6xl"
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                {skill.emoji}
-              </motion.span>
-              <div>
-                <h3 className="text-[#D7E2EA] font-bold text-2xl sm:text-3xl md:text-4xl">{skill.name}</h3>
-                <span
-                  className="font-mono text-xs uppercase tracking-widest px-2 py-0.5 rounded mt-1 inline-block"
-                  style={{ color: skill.color, backgroundColor: skill.color + '15' }}
-                >
-                  {skill.grade}
-                </span>
-              </div>
-            </div>
-
-            <div className="mb-6">
-              <div className="flex justify-between mb-1.5">
-                <span className="text-[#D7E2EA]/30 text-xs font-mono">Proficiency</span>
-                <span className="font-mono font-bold text-sm" style={{ color: skill.color }}>{skill.level}%</span>
-              </div>
-              <div className="skill-bar-bg h-3 rounded-full overflow-hidden">
-                <motion.div
-                  className="h-full rounded-full relative overflow-hidden"
-                  style={{ background: `linear-gradient(90deg, ${skill.color}, ${skill.color}88)`, width: `${skill.level}%` }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-gradient-x" style={{ backgroundSize: '200% 100%' }} />
-                </motion.div>
-              </div>
-            </div>
-
-            <p className="text-[#D7E2EA]/40 font-light leading-relaxed text-sm sm:text-base text-left">
-              {skill.desc}
-            </p>
-          </motion.div>
-        </div>
-      </div>
-    </motion.div>
-  );
-};
-
-// ═══════════════════════════════════════════════════════════════
-// MAIN SECTION
+// MAIN — TAB-SWITCHED with PORTAL TRANSITION + 2D EFFECTS
 // ═══════════════════════════════════════════════════════════════
 const SkillShowcase: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
+  const [active, setActive] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  const smoothProgress = useSpring(scrollYProgress, { damping: 30, stiffness: 100, mass: 0.5 });
+  const handleSwitch = (idx: number) => {
+    if (idx === active) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setActive(idx);
+      setIsTransitioning(false);
+    }, 400);
+  };
 
-  // Background gradient transform — at top level
-  const bgGradient = useTransform(
-    smoothProgress,
-    [0, 0.25, 0.5, 0.75, 1],
-    [
-      'radial-gradient(circle at 50% 50%, rgba(55,118,171,0.08), transparent 70%)',
-      'radial-gradient(circle at 50% 50%, rgba(247,223,30,0.08), transparent 70%)',
-      'radial-gradient(circle at 50% 50%, rgba(0,89,156,0.08), transparent 70%)',
-      'radial-gradient(circle at 50% 50%, rgba(248,152,32,0.08), transparent 70%)',
-      'radial-gradient(circle at 50% 50%, rgba(248,152,32,0.08), transparent 70%)',
-    ]
-  );
-
-  const scrollHintOpacity = useTransform(smoothProgress, [0, 0.05], [1, 0]);
-
-  const [activeIdx, setActiveIdx] = useState(0);
-
-  useEffect(() => {
-    const unsub = smoothProgress.on('change', (v) => {
-      const idx = Math.min(skills.length - 1, Math.max(0, Math.floor(v * skills.length)));
-      setActiveIdx(idx);
-    });
-    return () => unsub();
-  }, [smoothProgress]);
+  const current = skills[active];
 
   return (
-    <section id="skills" className="bg-[#0C0C0C] relative">
-      {/* Intro heading */}
-      <div className="px-5 sm:px-8 md:px-10 pt-24 sm:pt-32 pb-12 max-w-5xl mx-auto">
+    <section id="skills" className="bg-[#0C0C0C] px-5 sm:px-8 md:px-10 py-24 sm:py-32 relative overflow-hidden">
+      {/* Background gradient that shifts with active skill */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        animate={{
+          background: `radial-gradient(circle at 50% 50%, ${current.color}10, transparent 70%)`,
+        }}
+        transition={{ duration: 1 }}
+      />
+
+      <div className="relative z-10 max-w-5xl mx-auto">
+        {/* Header */}
         <ScrollReveal direction="left" offset={80}>
           <span className="text-[#00d4ff] font-mono text-xs uppercase tracking-widest block mb-3">{'<'} Tech Arsenal ⚔️ {'/>'}</span>
           <h2 className="hero-heading font-black uppercase leading-none tracking-tight" style={{ fontSize: 'clamp(3rem, 12vw, 140px)' }}>Skills</h2>
-          <p className="text-[#D7E2EA]/30 font-mono text-sm max-w-2xl mt-4">
-            Scroll down to enter the gateway. Each skill emerges through a portal — a journey through my tech arsenal.
+          <p className="text-[#D7E2EA]/30 font-mono text-sm max-w-2xl mt-4 mb-12">
+            Click on any skill to enter its portal. Watch each one emerge with its own unique 2D animation and story.
           </p>
         </ScrollReveal>
-      </div>
 
-      {/* STICKY HORIZONTAL SCROLL CONTAINER */}
-      <div ref={containerRef} className="relative" style={{ height: `${skills.length * 100}vh` }}>
-        <div className="sticky top-0 h-screen w-full overflow-hidden">
-          <motion.div className="absolute inset-0 pointer-events-none" style={{ background: bgGradient }} />
-
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.02]"
-            style={{
-              backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)',
-              backgroundSize: '50px 50px',
-            }}
-          />
-
-          {/* Top progress dots */}
-          <div className="absolute top-8 left-1/2 -translate-x-1/2 z-40 flex gap-3">
+        {/* Tabs */}
+        <ScrollReveal direction="left" offset={50}>
+          <div className="flex flex-wrap gap-3 mb-12">
             {skills.map((s, i) => (
-              <div
-                key={i}
-                className="h-1 rounded-full transition-all duration-500"
-                style={{
-                  width: activeIdx === i ? 40 : 20,
-                  backgroundColor: activeIdx === i ? s.color : 'rgba(215,226,234,0.15)',
-                  boxShadow: activeIdx === i ? `0 0 15px ${s.color}80` : 'none',
-                }}
-              />
+              <motion.button
+                key={s.name}
+                onClick={() => handleSwitch(i)}
+                className={`px-5 py-2.5 rounded-full font-mono text-sm font-medium cursor-pointer transition-all flex items-center gap-2 ${
+                  active === i ? 'text-[#0C0C0C]' : 'text-[#D7E2EA]/40 border border-[#D7E2EA]/8 hover:border-[#D7E2EA]/15'
+                }`}
+                style={active === i ? { backgroundColor: s.color, boxShadow: `0 0 25px ${s.color}25` } : {}}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <span className="text-lg">{s.emoji}</span> {s.name}
+              </motion.button>
             ))}
           </div>
+        </ScrollReveal>
 
-          {/* Bottom skill label */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40">
-            <AnimatePresence mode="wait">
+        {/* Active skill display with portal effect */}
+        <div className="relative min-h-[450px]">
+          {/* Portal effect overlay */}
+          <AnimatePresence>
+            {isTransitioning && (
               <motion.div
-                key={activeIdx}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="flex items-center gap-2 px-4 py-2 rounded-full glass border"
-                style={{ borderColor: skills[activeIdx].color + '40' }}
+                className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
               >
-                <span className="text-lg">{skills[activeIdx].emoji}</span>
-                <span className="font-mono text-xs uppercase tracking-widest" style={{ color: skills[activeIdx].color }}>
-                  {String(activeIdx + 1).padStart(2, '0')} / {String(skills.length).padStart(2, '0')} — {skills[activeIdx].name}
-                </span>
+                {/* Outer rotating ring */}
+                <motion.div
+                  className="absolute rounded-full"
+                  style={{
+                    width: 500,
+                    height: 500,
+                    background: `conic-gradient(from 0deg, transparent, ${current.color}, transparent, ${current.color}, transparent)`,
+                    filter: 'blur(20px)',
+                  }}
+                  initial={{ scale: 0, rotate: 0 }}
+                  animate={{ scale: 1.5, rotate: 360 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ duration: 0.6 }}
+                />
+                {/* Inner ring */}
+                <motion.div
+                  className="absolute rounded-full border-4"
+                  style={{
+                    width: 300,
+                    height: 300,
+                    borderColor: current.color,
+                    boxShadow: `0 0 60px ${current.color}, inset 0 0 60px ${current.color}`,
+                  }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1.2 }}
+                  exit={{ scale: 0 }}
+                  transition={{ duration: 0.4 }}
+                />
+                {/* Core */}
+                <motion.div
+                  className="absolute rounded-full"
+                  style={{
+                    width: 150,
+                    height: 150,
+                    background: `radial-gradient(circle, ${current.color}, transparent)`,
+                    filter: 'blur(30px)',
+                  }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1.5 }}
+                  exit={{ scale: 0 }}
+                  transition={{ duration: 0.5 }}
+                />
+                {/* Emoji in center */}
+                <motion.div
+                  className="absolute text-7xl z-10"
+                  initial={{ scale: 0, rotate: -180 }}
+                  animate={{ scale: 1.5, rotate: 0 }}
+                  exit={{ scale: 0, rotate: 180 }}
+                  transition={{ duration: 0.5, ease: 'backOut' }}
+                >
+                  {current.emoji}
+                </motion.div>
               </motion.div>
-            </AnimatePresence>
-          </div>
+            )}
+          </AnimatePresence>
 
-          {/* All skill panels */}
-          {skills.map((skill, i) => (
-            <SkillPanel key={i} skill={skill} index={i} sectionProgress={smoothProgress} />
-          ))}
-
-          {/* Scroll hint */}
-          <motion.div
-            className="absolute right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-center gap-2"
-            style={{ opacity: scrollHintOpacity }}
-          >
-            <span className="text-[#D7E2EA]/30 text-xs font-mono uppercase tracking-widest [writing-mode:vertical-rl]">
-              Scroll to traverse
-            </span>
+          {/* Skill content */}
+          <AnimatePresence mode="wait">
             <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="w-px h-12 bg-gradient-to-b from-[#00d4ff] to-transparent"
-            />
-          </motion.div>
-        </div>
-      </div>
+              key={active}
+              initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
+              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+              exit={{ opacity: 0, scale: 0.8, rotateY: 30 }}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+              style={{ transformPerspective: 1200 }}
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                {/* Animation - slides from left */}
+                <motion.div
+                  className="order-2 lg:order-1"
+                  initial={{ x: -80, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                >
+                  {React.createElement(current.Anim)}
+                </motion.div>
 
-      {/* Summary */}
-      <div className="px-5 sm:px-8 md:px-10 py-20 max-w-5xl mx-auto">
-        <ScrollReveal direction="left" offset={40}>
+                {/* Info - slides from right */}
+                <motion.div
+                  className="order-1 lg:order-2"
+                  initial={{ x: 80, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <motion.span
+                      className="text-5xl sm:text-6xl"
+                      animate={{ rotate: [0, 10, -10, 0] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                    >
+                      {current.emoji}
+                    </motion.span>
+                    <div>
+                      <h3 className="text-[#D7E2EA] font-bold text-2xl sm:text-3xl md:text-4xl">{current.name}</h3>
+                      <span
+                        className="font-mono text-xs uppercase tracking-widest px-2 py-0.5 rounded mt-1 inline-block"
+                        style={{ color: current.color, backgroundColor: current.color + '15' }}
+                      >
+                        {current.grade}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mb-6">
+                    <div className="flex justify-between mb-1.5">
+                      <span className="text-[#D7E2EA]/30 text-xs font-mono">Proficiency</span>
+                      <span className="font-mono font-bold text-sm" style={{ color: current.color }}>{current.level}%</span>
+                    </div>
+                    <div className="skill-bar-bg h-3 rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full rounded-full relative overflow-hidden"
+                        style={{ background: `linear-gradient(90deg, ${current.color}, ${current.color}88)` }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${current.level}%` }}
+                        transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-gradient-x" style={{ backgroundSize: '200% 100%' }} />
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  <p className="text-[#D7E2EA]/40 font-light leading-relaxed text-sm sm:text-base text-left">
+                    {current.desc}
+                  </p>
+                </motion.div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Summary */}
+        <ScrollReveal direction="left" offset={40} className="mt-20">
           <h3 className="text-[#D7E2EA]/30 font-mono text-xs uppercase tracking-widest mb-6">// All Skills Overview</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {skills.map((s, i) => (
               <motion.div
                 key={s.name}
-                className="flex items-center gap-4 p-4 rounded-xl glass-light border border-white/5"
+                onClick={() => handleSwitch(i)}
+                className="flex items-center gap-4 p-4 rounded-xl glass-light border border-white/5 cursor-pointer"
                 whileHover={{ borderColor: s.color + '40', boxShadow: `0 0 20px ${s.color}15`, x: 4 }}
               >
                 <span className="text-2xl">{s.emoji}</span>
@@ -487,11 +423,7 @@ const SkillShowcase: React.FC = () => {
                   <div className="skill-bar-bg h-1.5 rounded-full overflow-hidden">
                     <motion.div
                       className="h-full rounded-full"
-                      style={{ background: s.color }}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${s.level}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1.2, delay: i * 0.15 }}
+                      style={{ background: s.color, width: `${s.level}%` }}
                     />
                   </div>
                 </div>
