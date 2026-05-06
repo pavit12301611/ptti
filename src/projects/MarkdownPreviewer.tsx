@@ -1,0 +1,13 @@
+import React, { useState } from 'react';
+const def=`# Hello World! 👋\n\n## I'm Pavit Singh\n\nA **14-year-old** developer who *loves* code.\n\n### Tech Stack\n- Python 🐍\n- C++ ⚡\n- JavaScript 🌐\n- Java ☕\n\n\`const magic = () => "✨";\`\n\n> "Age is just a syntax error"\n\n---\n\nMade with ❤️ by **Pavit**`;
+const MarkdownPreviewer: React.FC = () => {
+  const [md, setMd] = useState(def);
+  const r=(t:string)=>{let h=t;h=h.replace(/^### (.+)$/gm,'<h3 class="text-base font-bold text-[#00ff87] mt-3 mb-1">$1</h3>');h=h.replace(/^## (.+)$/gm,'<h2 class="text-lg font-bold text-[#7b2ff7] mt-3 mb-1">$1</h2>');h=h.replace(/^# (.+)$/gm,'<h1 class="text-xl font-black text-[#00d4ff] mt-2 mb-2">$1</h1>');h=h.replace(/\*\*(.+?)\*\*/g,'<strong class="text-white font-bold">$1</strong>');h=h.replace(/\*(.+?)\*/g,'<em class="text-[#ff6b35] italic">$1</em>');h=h.replace(/`(.+?)`/g,'<code class="px-1 py-0.5 rounded bg-[#00d4ff]/10 text-[#00d4ff] font-mono text-xs">$1</code>');h=h.replace(/^> (.+)$/gm,'<blockquote class="border-l-2 border-[#7b2ff7] pl-3 text-white/50 italic my-2">$1</blockquote>');h=h.replace(/^- (.+)$/gm,'<li class="text-white/50 ml-4 list-disc text-sm">$1</li>');h=h.replace(/^---$/gm,'<hr class="border-white/10 my-3"/>');h=h.replace(/\n/g,'<br/>');return h;};
+  return (
+    <div className="w-full max-w-lg mx-auto"><div className="grid grid-cols-1 sm:grid-cols-2 gap-3 h-72">
+      <div className="flex flex-col rounded-xl overflow-hidden border border-white/10"><div className="flex items-center gap-1.5 px-3 py-2 bg-[#1a1a1a] border-b border-white/5"><div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]"/><div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]"/><div className="w-2.5 h-2.5 rounded-full bg-[#28c840]"/><span className="ml-2 text-white/20 text-xs font-mono">editor.md</span></div><textarea value={md} onChange={e=>setMd(e.target.value)} className="flex-1 bg-[#0a0a0a] text-white/60 p-3 font-mono text-xs leading-relaxed resize-none focus:outline-none" spellCheck={false}/></div>
+      <div className="flex flex-col rounded-xl overflow-hidden border border-[#00d4ff]/12"><div className="px-3 py-2 bg-[#0d1117] border-b border-[#00d4ff]/8"><span className="text-[#00d4ff] text-xs font-mono">preview</span></div><div className="flex-1 bg-[#0d1117] p-3 text-sm text-white/50 overflow-y-auto leading-relaxed" dangerouslySetInnerHTML={{__html:r(md)}}/></div>
+    </div></div>
+  );
+};
+export default MarkdownPreviewer;
