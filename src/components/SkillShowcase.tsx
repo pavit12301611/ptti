@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ScrollReveal from './ScrollReveal';
 
@@ -42,7 +42,7 @@ const PythonAnim: React.FC = () => {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// HTML ANIMATION — FIXED: filter undefined values
+// HTML ANIMATION
 // ═══════════════════════════════════════════════════════════════
 const HtmlAnim: React.FC = () => {
   const tags = ['<div>', '</div>', '<h1>', '<p>', '{color}', '.flex', '#app', 'const', '=>', 'async'];
@@ -188,7 +188,7 @@ const JavaAnim: React.FC = () => (
 );
 
 // ═══════════════════════════════════════════════════════════════
-// SKILLS DATA — Anim is now a string key, not component reference
+// SKILLS DATA
 // ═══════════════════════════════════════════════════════════════
 type AnimKey = 'python' | 'html' | 'cpp' | 'java';
 
@@ -225,9 +225,6 @@ const skills: Skill[] = [
   },
 ];
 
-// ═══════════════════════════════════════════════════════════════
-// ANIMATION RENDERER — explicit if/else (build-safe)
-// ═══════════════════════════════════════════════════════════════
 const renderAnim = (key: AnimKey) => {
   if (key === 'python') return <PythonAnim />;
   if (key === 'html') return <HtmlAnim />;
@@ -237,172 +234,45 @@ const renderAnim = (key: AnimKey) => {
 };
 
 // ═══════════════════════════════════════════════════════════════
-// SKILL PANEL
-// ═══════════════════════════════════════════════════════════════
-interface SkillPanelProps {
-  skill: Skill;
-  index: number;
-  onActive: (idx: number) => void;
-}
-
-const SkillPanel: React.FC<SkillPanelProps> = ({ skill, index, onActive }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (!entry) return;
-        const active = entry.intersectionRatio > 0.5;
-        setIsActive(active);
-        if (active) onActive(index);
-      },
-      { threshold: [0, 0.25, 0.5, 0.75, 1] }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [index, onActive]);
-
-  return (
-    <div ref={ref} className="h-screen w-full flex items-center justify-center px-5 sm:px-8 md:px-10 sticky top-0">
-      {/* Portal Effect */}
-      <AnimatePresence>
-        {isActive && (
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.div
-              className="absolute rounded-full"
-              style={{
-                width: 600, height: 600,
-                background: `conic-gradient(from 0deg, transparent, ${skill.color}80, transparent, ${skill.color}80, transparent)`,
-                filter: 'blur(30px)',
-              }}
-              initial={{ scale: 0, rotate: 0 }}
-              animate={{ scale: 1.5, rotate: 360 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{ duration: 1.2, ease: 'easeOut' }}
-            />
-            <motion.div
-              className="absolute rounded-full border-2"
-              style={{
-                width: 400, height: 400, borderColor: skill.color,
-                boxShadow: `0 0 80px ${skill.color}, inset 0 0 80px ${skill.color}`,
-              }}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              transition={{ duration: 0.8, ease: 'backOut' }}
-            />
-            <motion.div
-              className="absolute rounded-full"
-              style={{
-                width: 250, height: 250,
-                background: `radial-gradient(circle, ${skill.color}aa, transparent)`,
-                filter: 'blur(40px)',
-              }}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1.5 }}
-              exit={{ scale: 0 }}
-              transition={{ duration: 1 }}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Content */}
-      <AnimatePresence mode="wait">
-        {isActive && (
-          <motion.div
-            key={index}
-            className="relative z-10 max-w-5xl w-full"
-            initial={{ opacity: 0, scale: 0.7, rotateY: -30 }}
-            animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-            exit={{ opacity: 0, scale: 0.7, rotateY: 30 }}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-            style={{ transformPerspective: 1500 }}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-              <motion.div
-                initial={{ x: -150, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: 150, opacity: 0 }}
-                transition={{ duration: 0.7, delay: 0.3, ease: 'easeOut' }}
-              >
-                {renderAnim(skill.animKey)}
-              </motion.div>
-
-              <motion.div
-                initial={{ x: 150, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -150, opacity: 0 }}
-                transition={{ duration: 0.7, delay: 0.4, ease: 'easeOut' }}
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <motion.span
-                    className="text-5xl sm:text-6xl"
-                    animate={{ rotate: [0, 10, -10, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    {skill.emoji}
-                  </motion.span>
-                  <div>
-                    <h3 className="text-[#D7E2EA] font-bold text-2xl sm:text-3xl md:text-4xl">{skill.name}</h3>
-                    <span
-                      className="font-mono text-xs uppercase tracking-widest px-2 py-0.5 rounded mt-1 inline-block"
-                      style={{ color: skill.color, backgroundColor: skill.color + '15' }}
-                    >
-                      {skill.grade}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mb-6">
-                  <div className="flex justify-between mb-1.5">
-                    <span className="text-[#D7E2EA]/30 text-xs font-mono">Proficiency</span>
-                    <span className="font-mono font-bold text-sm" style={{ color: skill.color }}>{skill.level}%</span>
-                  </div>
-                  <div className="skill-bar-bg h-3 rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full relative overflow-hidden"
-                      style={{ background: `linear-gradient(90deg, ${skill.color}, ${skill.color}88)` }}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${skill.level}%` }}
-                      transition={{ duration: 1.2, delay: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-gradient-x" style={{ backgroundSize: '200% 100%' }} />
-                    </motion.div>
-                  </div>
-                </div>
-
-                <p className="text-[#D7E2EA]/40 font-light leading-relaxed text-sm sm:text-base text-left">
-                  {skill.desc}
-                </p>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
-
-// ═══════════════════════════════════════════════════════════════
-// MAIN
+// MAIN — SINGLE STICKY CONTAINER WITH SCROLL-DRIVEN INDEX
 // ═══════════════════════════════════════════════════════════════
 const SkillShowcase: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
+  const [showPortal, setShowPortal] = useState(false);
+  const lastIdxRef = useRef(0);
 
-  const handleActive = useCallback((idx: number) => {
-    setActiveIdx(idx);
+  useEffect(() => {
+    const handleScroll = () => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const rect = container.getBoundingClientRect();
+      const containerHeight = container.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      // Calculate progress (0 to 1) of scroll through container
+      const scrolled = -rect.top;
+      const totalScrollable = containerHeight - viewportHeight;
+      const progress = Math.max(0, Math.min(1, scrolled / totalScrollable));
+
+      // Map progress to skill index
+      const idx = Math.min(skills.length - 1, Math.max(0, Math.floor(progress * skills.length)));
+
+      if (idx !== lastIdxRef.current) {
+        lastIdxRef.current = idx;
+        setActiveIdx(idx);
+        setShowPortal(true);
+        setTimeout(() => setShowPortal(false), 1200);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const currentSkill = skills[activeIdx];
 
   return (
     <section id="skills" className="bg-[#0C0C0C] relative">
@@ -417,44 +287,173 @@ const SkillShowcase: React.FC = () => {
         </ScrollReveal>
       </div>
 
-      {/* Sticky scroll container */}
-      <div className="relative">
-        {/* Background gradient */}
-        <div
-          className="fixed inset-0 pointer-events-none transition-all duration-1000 z-0"
-          style={{
-            background: `radial-gradient(circle at 50% 50%, ${skills[activeIdx]?.color || '#00d4ff'}08, transparent 70%)`,
-          }}
-        />
+      {/* Sticky scroll container — height = 4 viewports */}
+      <div ref={containerRef} style={{ height: `${skills.length * 100}vh` }} className="relative">
+        {/* Single sticky viewport */}
+        <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+          {/* Background gradient — subtle, color-matched */}
+          <div
+            className="absolute inset-0 pointer-events-none transition-all duration-1000"
+            style={{
+              background: `radial-gradient(circle at 50% 50%, ${currentSkill.color}08, transparent 70%)`,
+            }}
+          />
 
-        {/* Top progress dots */}
-        <div className="sticky top-8 z-40 flex justify-center pointer-events-none mb-[-2rem]">
-          <div className="flex gap-3 px-4 py-2 rounded-full glass">
-            {skills.map((s, i) => (
-              <div
-                key={i}
-                className="h-1 rounded-full transition-all duration-500"
-                style={{
-                  width: activeIdx === i ? 40 : 20,
-                  backgroundColor: activeIdx === i ? s.color : 'rgba(215,226,234,0.15)',
-                  boxShadow: activeIdx === i ? `0 0 15px ${s.color}80` : 'none',
-                }}
-              />
-            ))}
+          {/* Grid overlay */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.025]"
+            style={{
+              backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)',
+              backgroundSize: '50px 50px',
+            }}
+          />
+
+          {/* Top progress dots */}
+          <div className="absolute top-8 left-1/2 -translate-x-1/2 z-40">
+            <div className="flex gap-3 px-5 py-2.5 rounded-full glass border border-white/5">
+              {skills.map((s, i) => (
+                <div
+                  key={i}
+                  className="h-1 rounded-full transition-all duration-500"
+                  style={{
+                    width: activeIdx === i ? 40 : 20,
+                    backgroundColor: activeIdx === i ? s.color : 'rgba(215,226,234,0.15)',
+                    boxShadow: activeIdx === i ? `0 0 15px ${s.color}80` : 'none',
+                  }}
+                />
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Skill panels */}
-        <div className="relative">
-          {skills.map((skill, i) => (
-            <SkillPanel key={i} skill={skill} index={i} onActive={handleActive} />
-          ))}
-        </div>
+          {/* Portal Effect — only shows briefly on transition */}
+          <AnimatePresence>
+            {showPortal && (
+              <motion.div
+                key={`portal-${activeIdx}`}
+                className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 0] }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.2, times: [0, 0.3, 1] }}
+              >
+                {/* Outer rotating ring */}
+                <motion.div
+                  className="absolute rounded-full"
+                  style={{
+                    width: 600, height: 600,
+                    background: `conic-gradient(from 0deg, transparent, ${currentSkill.color}, transparent, ${currentSkill.color}, transparent)`,
+                    opacity: 0.5,
+                  }}
+                  initial={{ scale: 0, rotate: 0 }}
+                  animate={{ scale: 1.3, rotate: 360 }}
+                  transition={{ duration: 1.2, ease: 'easeOut' }}
+                />
+                {/* Middle ring */}
+                <motion.div
+                  className="absolute rounded-full border-2"
+                  style={{
+                    width: 400, height: 400,
+                    borderColor: currentSkill.color,
+                    boxShadow: `0 0 50px ${currentSkill.color}aa, inset 0 0 30px ${currentSkill.color}66`,
+                  }}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1.1 }}
+                  transition={{ duration: 0.8, ease: 'backOut' }}
+                />
+                {/* Inner ring */}
+                <motion.div
+                  className="absolute rounded-full border"
+                  style={{
+                    width: 250, height: 250,
+                    borderColor: currentSkill.color + '80',
+                  }}
+                  initial={{ scale: 0, rotate: 180 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.6, ease: 'backOut' }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-        {/* Bottom skill label */}
-        <div className="sticky bottom-8 z-40 flex justify-center pointer-events-none mt-[-3rem] pb-8">
-          <AnimatePresence mode="wait">
-            {skills[activeIdx] && (
+          {/* SINGLE content area — no overlap possible */}
+          <div className="relative z-10 w-full max-w-5xl px-5 sm:px-8 md:px-10">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIdx}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.85 }}
+                transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                  {/* Animation side */}
+                  <motion.div
+                    initial={{ x: -120, opacity: 0, rotateY: -20 }}
+                    animate={{ x: 0, opacity: 1, rotateY: 0 }}
+                    exit={{ x: 120, opacity: 0, rotateY: 20 }}
+                    transition={{ duration: 0.6, delay: 0.15, ease: 'easeOut' }}
+                    style={{ transformPerspective: 1200 }}
+                  >
+                    {renderAnim(currentSkill.animKey)}
+                  </motion.div>
+
+                  {/* Info side */}
+                  <motion.div
+                    initial={{ x: 120, opacity: 0, rotateY: 20 }}
+                    animate={{ x: 0, opacity: 1, rotateY: 0 }}
+                    exit={{ x: -120, opacity: 0, rotateY: -20 }}
+                    transition={{ duration: 0.6, delay: 0.25, ease: 'easeOut' }}
+                    style={{ transformPerspective: 1200 }}
+                  >
+                    <div className="flex items-center gap-4 mb-4">
+                      <motion.span
+                        className="text-5xl sm:text-6xl"
+                        animate={{ rotate: [0, 10, -10, 0] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                      >
+                        {currentSkill.emoji}
+                      </motion.span>
+                      <div>
+                        <h3 className="text-[#D7E2EA] font-bold text-2xl sm:text-3xl md:text-4xl">{currentSkill.name}</h3>
+                        <span
+                          className="font-mono text-xs uppercase tracking-widest px-2 py-0.5 rounded mt-1 inline-block"
+                          style={{ color: currentSkill.color, backgroundColor: currentSkill.color + '15' }}
+                        >
+                          {currentSkill.grade}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mb-6">
+                      <div className="flex justify-between mb-1.5">
+                        <span className="text-[#D7E2EA]/30 text-xs font-mono">Proficiency</span>
+                        <span className="font-mono font-bold text-sm" style={{ color: currentSkill.color }}>{currentSkill.level}%</span>
+                      </div>
+                      <div className="skill-bar-bg h-3 rounded-full overflow-hidden">
+                        <motion.div
+                          className="h-full rounded-full relative overflow-hidden"
+                          style={{ background: `linear-gradient(90deg, ${currentSkill.color}, ${currentSkill.color}88)` }}
+                          initial={{ width: 0 }}
+                          animate={{ width: `${currentSkill.level}%` }}
+                          transition={{ duration: 1.2, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-gradient-x" style={{ backgroundSize: '200% 100%' }} />
+                        </motion.div>
+                      </div>
+                    </div>
+
+                    <p className="text-[#D7E2EA]/50 font-light leading-relaxed text-sm sm:text-base text-left">
+                      {currentSkill.desc}
+                    </p>
+                  </motion.div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Bottom skill label */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40">
+            <AnimatePresence mode="wait">
               <motion.div
                 key={activeIdx}
                 initial={{ opacity: 0, y: 10 }}
@@ -462,15 +461,27 @@ const SkillShowcase: React.FC = () => {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
                 className="flex items-center gap-2 px-4 py-2 rounded-full glass border"
-                style={{ borderColor: skills[activeIdx].color + '40' }}
+                style={{ borderColor: currentSkill.color + '40' }}
               >
-                <span className="text-lg">{skills[activeIdx].emoji}</span>
-                <span className="font-mono text-xs uppercase tracking-widest" style={{ color: skills[activeIdx].color }}>
-                  {String(activeIdx + 1).padStart(2, '0')} / {String(skills.length).padStart(2, '0')} — {skills[activeIdx].name}
+                <span className="text-lg">{currentSkill.emoji}</span>
+                <span className="font-mono text-xs uppercase tracking-widest" style={{ color: currentSkill.color }}>
+                  {String(activeIdx + 1).padStart(2, '0')} / {String(skills.length).padStart(2, '0')} — {currentSkill.name}
                 </span>
               </motion.div>
-            )}
-          </AnimatePresence>
+            </AnimatePresence>
+          </div>
+
+          {/* Scroll hint — bottom right */}
+          <div className="absolute bottom-8 right-8 z-40 hidden md:flex flex-col items-center gap-2 opacity-40">
+            <span className="text-[#D7E2EA]/40 text-xs font-mono uppercase tracking-widest [writing-mode:vertical-rl]">
+              Keep scrolling
+            </span>
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="w-px h-12 bg-gradient-to-b from-[#00d4ff] to-transparent"
+            />
+          </div>
         </div>
       </div>
 
