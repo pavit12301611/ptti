@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform, useSpring, MotionValue } from 'framer-motion';
 import ScrollReveal from './ScrollReveal';
 
@@ -47,10 +47,13 @@ const PythonAnim: React.FC = () => {
 const HtmlAnim: React.FC = () => {
   const tags = ['<div>', '</div>', '<h1>', '<p>', '{color}', '.flex', '#app', 'const', '=>', 'async'];
   const [lines, setLines] = useState<string[]>([]);
-  const allLines = ['<html>', '  <body>', '    <h1>Hello</h1>', '    <p>World</p>', '  </body>', '</html>'];
-  React.useEffect(() => {
+  useEffect(() => {
+    const allLines = ['<html>', '  <body>', '    <h1>Hello</h1>', '    <p>World</p>', '  </body>', '</html>'];
     let i = 0;
-    const iv = setInterval(() => { if (i < allLines.length) { setLines(p => [...p, allLines[i]]); i++; } else clearInterval(iv); }, 600);
+    const iv = setInterval(() => {
+      if (i < allLines.length) { setLines(p => [...p, allLines[i]]); i++; }
+      else clearInterval(iv);
+    }, 600);
     return () => clearInterval(iv);
   }, []);
   return (
@@ -182,22 +185,22 @@ const JavaAnim: React.FC = () => (
 const skills = [
   {
     name: 'Python', emoji: '🐍', level: 95, color: '#3776AB', grade: 'Expert',
-    desc: 'Python was my gateway drug into programming. At age 11, I discovered it and immediately fell in love with its elegance and raw power. From automating repetitive tasks to building complex data analysis scripts and web scrapers, Python has been my most reliable companion. I\'ve built automation bots, dabbled in machine learning with TensorFlow and scikit-learn, and created Django web applications. Python taught me that the best code isn\'t always the most complex — sometimes the simplest solution is the most beautiful one.',
+    desc: 'Python was my gateway drug into programming. At age 11, I discovered it and immediately fell in love with its elegance and raw power. From automating repetitive tasks to building complex data analysis scripts and web scrapers, Python has been my most reliable companion. I\'ve built automation bots, dabbled in machine learning with TensorFlow and scikit-learn, and created Django web applications.',
     Anim: PythonAnim,
   },
   {
     name: 'HTML / CSS / JS', emoji: '🌐', level: 92, color: '#F7DF1E', grade: 'Expert',
-    desc: 'The holy trinity of the web — and the foundation of everything I build. HTML gives structure, CSS brings beauty, and JavaScript breathes life into it all. I\'ve mastered React for complex UIs, Three.js for mind-bending 3D browser experiences, GSAP for animations that make users go "wow", and WebGL for raw GPU performance. Tailwind CSS is my styling weapon of choice. Every website I create is responsive, accessible, and performs like a dream.',
+    desc: 'The holy trinity of the web — and the foundation of everything I build. HTML gives structure, CSS brings beauty, and JavaScript breathes life into it all. I\'ve mastered React for complex UIs, Three.js for mind-bending 3D browser experiences, GSAP for animations that make users go "wow", and WebGL for raw GPU performance. Tailwind CSS is my styling weapon of choice.',
     Anim: HtmlAnim,
   },
   {
     name: 'C / C++', emoji: '⚡', level: 82, color: '#00599C', grade: 'Advanced',
-    desc: 'C++ taught me to think like a machine. While Python handles high-level magic, C++ showed me what happens under the hood — memory management, pointers, data structures, and algorithms at their most fundamental. I\'ve implemented complex data structures from scratch, solved hundreds of competitive programming problems, and built performance-critical applications. Understanding C++ made me a fundamentally better programmer in every language.',
+    desc: 'C++ taught me to think like a machine. While Python handles high-level magic, C++ showed me what happens under the hood — memory management, pointers, data structures, and algorithms at their most fundamental. I\'ve implemented complex data structures from scratch, solved hundreds of competitive programming problems, and built performance-critical applications.',
     Anim: CppAnim,
   },
   {
     name: 'Java', emoji: '☕', level: 60, color: '#f89820', grade: 'Intermediate',
-    desc: 'Java is my newest adventure. Object-oriented programming in Java feels like building with perfectly designed LEGO blocks — everything has its place, every class has its purpose. I\'m diving deep into JVM internals, working with the collections framework, exploring multithreading, and getting hands dirty with Spring Boot. What excites me most is Java\'s "write once, run anywhere" philosophy and its massive enterprise presence.',
+    desc: 'Java is my newest adventure. Object-oriented programming in Java feels like building with perfectly designed LEGO blocks — everything has its place, every class has its purpose. I\'m diving deep into JVM internals, working with the collections framework, exploring multithreading, and getting hands dirty with Spring Boot.',
     Anim: JavaAnim,
   },
 ];
@@ -211,38 +214,28 @@ const Portal: React.FC<{ progress: MotionValue<number>; color: string }> = ({ pr
   const rotate = useTransform(progress, [0, 1], [0, 180]);
 
   return (
-    <motion.div
-      className="absolute inset-0 flex items-center justify-center pointer-events-none z-30"
-      style={{ opacity }}
-    >
-      {/* Outer ring */}
+    <motion.div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30" style={{ opacity }}>
       <motion.div
         className="absolute rounded-full"
         style={{
           width: 600, height: 600,
           background: `conic-gradient(from 0deg, ${color}00, ${color}80, ${color}00, ${color}80, ${color}00)`,
-          scale, rotate,
-          filter: 'blur(20px)',
+          scale, rotate, filter: 'blur(20px)',
         }}
       />
-      {/* Inner ring */}
       <motion.div
         className="absolute rounded-full border-2"
         style={{
-          width: 400, height: 400,
-          borderColor: color,
-          scale,
+          width: 400, height: 400, borderColor: color, scale,
           boxShadow: `0 0 80px ${color}, inset 0 0 80px ${color}`,
         }}
       />
-      {/* Core glow */}
       <motion.div
         className="absolute rounded-full"
         style={{
           width: 200, height: 200,
           background: `radial-gradient(circle, ${color}80, transparent)`,
-          scale,
-          filter: 'blur(40px)',
+          scale, filter: 'blur(40px)',
         }}
       />
     </motion.div>
@@ -250,42 +243,49 @@ const Portal: React.FC<{ progress: MotionValue<number>; color: string }> = ({ pr
 };
 
 // ═══════════════════════════════════════════════════════════════
-// SINGLE SKILL PANEL
+// SINGLE SKILL PANEL — All useTransform hooks at top level ✅
 // ═══════════════════════════════════════════════════════════════
-const SkillPanel: React.FC<{ skill: typeof skills[0]; index: number; sectionProgress: MotionValue<number> }> = ({ skill, index, sectionProgress }) => {
+interface SkillPanelProps {
+  skill: typeof skills[0];
+  index: number;
+  sectionProgress: MotionValue<number>;
+}
+
+const SkillPanel: React.FC<SkillPanelProps> = ({ skill, index, sectionProgress }) => {
   const total = skills.length;
   const segmentSize = 1 / total;
   const start = index * segmentSize;
   const end = (index + 1) * segmentSize;
   const center = start + segmentSize / 2;
 
-  // Visibility based on scroll progress
+  // ✅ ALL HOOKS AT TOP LEVEL — no inline useTransform in JSX
   const opacity = useTransform(
     sectionProgress,
-    [start - 0.05, start, end, end + 0.05],
+    [Math.max(0, start - 0.05), start, end, Math.min(1, end + 0.05)],
     [0, 1, 1, 0]
   );
 
-  // Scale animation - portal effect
   const scale = useTransform(
     sectionProgress,
-    [start - 0.1, center, end + 0.1],
+    [Math.max(0, start - 0.1), center, Math.min(1, end + 0.1)],
     [0.7, 1, 0.7]
   );
 
-  // Rotate slightly for depth
   const rotateY = useTransform(
     sectionProgress,
-    [start - 0.05, center, end + 0.05],
+    [Math.max(0, start - 0.05), center, Math.min(1, end + 0.05)],
     [-15, 0, 15]
   );
 
-  // Portal animation progress (peaks at center)
   const portalProgress = useTransform(
     sectionProgress,
-    [start - 0.05, start + 0.05, end - 0.05, end + 0.05],
+    [Math.max(0, start - 0.05), start + 0.05, end - 0.05, Math.min(1, end + 0.05)],
     [0, 1, 1, 0]
   );
+
+  // Slide animations
+  const animX = useTransform(sectionProgress, [start, center, end], [-100, 0, 100]);
+  const infoX = useTransform(sectionProgress, [start, center, end], [100, 0, -100]);
 
   return (
     <motion.div
@@ -297,21 +297,12 @@ const SkillPanel: React.FC<{ skill: typeof skills[0]; index: number; sectionProg
       <div className="relative z-10 max-w-5xl w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Animation side */}
-          <motion.div
-            initial={false}
-            style={{
-              x: useTransform(sectionProgress, [start, center, end], [-100, 0, 100]),
-            }}
-          >
+          <motion.div style={{ x: animX }}>
             {React.createElement(skill.Anim)}
           </motion.div>
 
           {/* Info side */}
-          <motion.div
-            style={{
-              x: useTransform(sectionProgress, [start, center, end], [100, 0, -100]),
-            }}
-          >
+          <motion.div style={{ x: infoX }}>
             <div className="flex items-center gap-4 mb-4">
               <motion.span
                 className="text-5xl sm:text-6xl"
@@ -339,11 +330,7 @@ const SkillPanel: React.FC<{ skill: typeof skills[0]; index: number; sectionProg
               <div className="skill-bar-bg h-3 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full rounded-full relative overflow-hidden"
-                  style={{ background: `linear-gradient(90deg, ${skill.color}, ${skill.color}88)` }}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${skill.level}%` }}
-                  viewport={{ once: false }}
-                  transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+                  style={{ background: `linear-gradient(90deg, ${skill.color}, ${skill.color}88)`, width: `${skill.level}%` }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent animate-gradient-x" style={{ backgroundSize: '200% 100%' }} />
                 </motion.div>
@@ -361,7 +348,7 @@ const SkillPanel: React.FC<{ skill: typeof skills[0]; index: number; sectionProg
 };
 
 // ═══════════════════════════════════════════════════════════════
-// MAIN SECTION — STICKY HORIZONTAL SCROLL WITH GATEWAY
+// MAIN SECTION
 // ═══════════════════════════════════════════════════════════════
 const SkillShowcase: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -370,27 +357,28 @@ const SkillShowcase: React.FC = () => {
     offset: ['start start', 'end end'],
   });
 
-  // Smooth spring for buttery scroll
   const smoothProgress = useSpring(scrollYProgress, { damping: 30, stiffness: 100, mass: 0.5 });
 
-  // Background color shift based on active skill
+  // Background gradient transform — at top level
   const bgGradient = useTransform(
     smoothProgress,
     [0, 0.25, 0.5, 0.75, 1],
     [
-      'radial-gradient(circle at 50% 50%, #3776AB10, transparent 70%)',
-      'radial-gradient(circle at 50% 50%, #F7DF1E10, transparent 70%)',
-      'radial-gradient(circle at 50% 50%, #00599C10, transparent 70%)',
-      'radial-gradient(circle at 50% 50%, #f8982010, transparent 70%)',
-      'radial-gradient(circle at 50% 50%, #f8982010, transparent 70%)',
+      'radial-gradient(circle at 50% 50%, rgba(55,118,171,0.08), transparent 70%)',
+      'radial-gradient(circle at 50% 50%, rgba(247,223,30,0.08), transparent 70%)',
+      'radial-gradient(circle at 50% 50%, rgba(0,89,156,0.08), transparent 70%)',
+      'radial-gradient(circle at 50% 50%, rgba(248,152,32,0.08), transparent 70%)',
+      'radial-gradient(circle at 50% 50%, rgba(248,152,32,0.08), transparent 70%)',
     ]
   );
 
-  // Active skill tracker for tabs
-  const [activeIdx, setActiveIdx] = React.useState(0);
-  React.useEffect(() => {
+  const scrollHintOpacity = useTransform(smoothProgress, [0, 0.05], [1, 0]);
+
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  useEffect(() => {
     const unsub = smoothProgress.on('change', (v) => {
-      const idx = Math.min(skills.length - 1, Math.floor(v * skills.length));
+      const idx = Math.min(skills.length - 1, Math.max(0, Math.floor(v * skills.length)));
       setActiveIdx(idx);
     });
     return () => unsub();
@@ -412,13 +400,8 @@ const SkillShowcase: React.FC = () => {
       {/* STICKY HORIZONTAL SCROLL CONTAINER */}
       <div ref={containerRef} className="relative" style={{ height: `${skills.length * 100}vh` }}>
         <div className="sticky top-0 h-screen w-full overflow-hidden">
-          {/* Background gradient that shifts with scroll */}
-          <motion.div
-            className="absolute inset-0 pointer-events-none transition-all duration-700"
-            style={{ background: bgGradient }}
-          />
+          <motion.div className="absolute inset-0 pointer-events-none" style={{ background: bgGradient }} />
 
-          {/* Grid overlay */}
           <div
             className="absolute inset-0 pointer-events-none opacity-[0.02]"
             style={{
@@ -427,10 +410,10 @@ const SkillShowcase: React.FC = () => {
             }}
           />
 
-          {/* Progress indicator at top */}
+          {/* Top progress dots */}
           <div className="absolute top-8 left-1/2 -translate-x-1/2 z-40 flex gap-3">
             {skills.map((s, i) => (
-              <motion.div
+              <div
                 key={i}
                 className="h-1 rounded-full transition-all duration-500"
                 style={{
@@ -442,7 +425,7 @@ const SkillShowcase: React.FC = () => {
             ))}
           </div>
 
-          {/* Skill name label at bottom */}
+          {/* Bottom skill label */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40">
             <AnimatePresence mode="wait">
               <motion.div
@@ -462,17 +445,15 @@ const SkillShowcase: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* All skill panels stacked */}
+          {/* All skill panels */}
           {skills.map((skill, i) => (
             <SkillPanel key={i} skill={skill} index={i} sectionProgress={smoothProgress} />
           ))}
 
-          {/* Scroll hint (only shows initially) */}
+          {/* Scroll hint */}
           <motion.div
             className="absolute right-6 top-1/2 -translate-y-1/2 z-40 hidden md:flex flex-col items-center gap-2"
-            style={{
-              opacity: useTransform(smoothProgress, [0, 0.05], [1, 0]),
-            }}
+            style={{ opacity: scrollHintOpacity }}
           >
             <span className="text-[#D7E2EA]/30 text-xs font-mono uppercase tracking-widest [writing-mode:vertical-rl]">
               Scroll to traverse
@@ -486,7 +467,7 @@ const SkillShowcase: React.FC = () => {
         </div>
       </div>
 
-      {/* Summary section after scroll completes */}
+      {/* Summary */}
       <div className="px-5 sm:px-8 md:px-10 py-20 max-w-5xl mx-auto">
         <ScrollReveal direction="left" offset={40}>
           <h3 className="text-[#D7E2EA]/30 font-mono text-xs uppercase tracking-widest mb-6">// All Skills Overview</h3>
